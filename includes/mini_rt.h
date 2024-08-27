@@ -6,7 +6,7 @@
 /*   By: jsaintho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 17:54:56 by jsaintho          #+#    #+#             */
-/*   Updated: 2024/08/26 17:47:07 by jsaintho         ###   ########.fr       */
+/*   Updated: 2024/08/27 18:11:09 by jsaintho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 #include <stdlib.h>
 #include <math.h> 
 
-# define WIDTH 1920
-# define HEIGHT 1080
+# define WIDTH 800
+# define HEIGHT 400
 // # define ASPECT_RATIO 16/9
 
 //# define IMAGE_WIDTH 1080
@@ -28,27 +28,47 @@
 //# define VIEWPORT_WIDTH VIEWPORT_HEIGHT * (double(IMAGE_width)/IMAGE_height)
 
 
+// ------------------------
 typedef struct s_v3
 {
-	double	x;
-	double	y;
-	double	z;
+	int		x;
+	int		y;
+	int		z;
 	double	len;
 }			t_v3;
-
 typedef struct s_ray
 {
 	t_v3	origin;
 	t_v3	dir;
 }				t_ray;
+// -------------------------
 
+
+// -------------------------
+typedef struct s_viewport
+{
+	int		height;
+	int		width;
+	int		image_w;
+	int		image_h;
+	t_v3	vector_u;
+	t_v3	vector_v;
+	double	pixel_delta_u;
+	double	pixel_delta_v;
+
+	double	focal_length;
+	t_v3	upperLeft;
+	t_v3	upperLeftPixel;
+}				t_viewport;
 
 typedef struct s_scene
 {
-	t_v3	camera;
-	int		viewport_height;
-	int		viewport_width;
-}			t_scene;
+	t_v3		camera;
+	t_viewport	*viewport;
+}				t_scene;
+// -------------------------
+
+
 
 typedef struct s_MiniRT
 {
@@ -74,7 +94,7 @@ t_v3	v3_add(t_v3 a, t_v3 b);
 t_v3	v3_cross(t_v3 a, t_v3 b);
 t_v3 	v3_mult(t_v3 a, t_v3 b);
 t_v3	unit_vector(t_v3 v);
-t_v3	unit_vector(t_v3 v);
 t_v3	v3_constructor(int x, int y, int z);
+t_ray	ray_constructor(t_v3 origin, t_v3 d);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: jsaintho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 17:37:14 by jsaintho          #+#    #+#             */
-/*   Updated: 2024/08/26 17:39:26 by jsaintho         ###   ########.fr       */
+/*   Updated: 2024/08/27 14:34:32 by jsaintho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,6 @@ int main(int argc, char **argv)
 		clean_exit(t);
 		return (0);
 	}
-	printf("Initalized  [Window : %dx%d] [Viewport %d:%d] \n", WIDTH, HEIGHT, 
-			t->rt_scene->viewport_width, t->rt_scene->viewport_height);
 	//mlx_hook(t->win, 2, 1L << 0, k_hook, t);
 	mlx_put_image_to_window(t->mlx, t->win, t->img, 0, 0);
 	mlx_loop(t->mlx);

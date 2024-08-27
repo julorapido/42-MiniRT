@@ -6,7 +6,7 @@
 /*   By: jsaintho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 15:10:02 by jsaintho          #+#    #+#             */
-/*   Updated: 2024/08/26 17:53:41 by jsaintho         ###   ########.fr       */
+/*   Updated: 2024/08/27 16:39:23 by jsaintho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,13 @@ t_v3	unit_vector(t_v3 v)
 	return(
 		v3_constructor(v.x * (1 / v.len), v.y * (1 / v.len), v.z * (1 / v.len))
 	);
+}
+
+t_ray	ray_constructor(t_v3 origin, t_v3 d)
+{
+	t_ray	r;
+
+	r.origin = origin;
+	r.dir = d;
+	return (r);
 }
