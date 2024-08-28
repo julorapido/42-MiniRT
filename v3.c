@@ -6,14 +6,14 @@
 /*   By: jsaintho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 15:10:02 by jsaintho          #+#    #+#             */
-/*   Updated: 2024/08/27 16:39:23 by jsaintho         ###   ########.fr       */
+/*   Updated: 2024/08/28 12:17:29 by jsaintho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_rt.h"
 
 
-t_v3	v3_constructor(int x, int y, int z)
+t_v3	v3_constructor(double x, double y, double z)
 {
 	t_v3	v;
 

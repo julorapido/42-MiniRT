@@ -6,7 +6,7 @@
 /*   By: jsaintho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 17:54:56 by jsaintho          #+#    #+#             */
-/*   Updated: 2024/08/27 18:11:09 by jsaintho         ###   ########.fr       */
+/*   Updated: 2024/08/28 12:27:46 by jsaintho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@
 // ------------------------
 typedef struct s_v3
 {
-	int		x;
-	int		y;
-	int		z;
+	double	x;
+	double	y;
+	double	z;
 	double	len;
 }			t_v3;
 typedef struct s_ray
@@ -94,7 +94,7 @@ t_v3	v3_add(t_v3 a, t_v3 b);
 t_v3	v3_cross(t_v3 a, t_v3 b);
 t_v3 	v3_mult(t_v3 a, t_v3 b);
 t_v3	unit_vector(t_v3 v);
-t_v3	v3_constructor(int x, int y, int z);
+t_v3	v3_constructor(double x, double y, double z);
 t_ray	ray_constructor(t_v3 origin, t_v3 d);
 
 #endif

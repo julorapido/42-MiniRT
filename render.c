@@ -6,7 +6,7 @@
 /*   By: jsaintho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 12:57:51 by jsaintho          #+#    #+#             */
-/*   Updated: 2024/08/27 18:14:09 by jsaintho         ###   ########.fr       */
+/*   Updated: 2024/08/28 14:29:18 by jsaintho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ void	set_pixel_color(t_MiniRT *f, long x, long y, int c)
 	
 	if (x < 0 || y < 0 || y > HEIGHT || x > WIDTH)
 		return ;
-	color = (c >> 24);
+	// color = (c >> 24);
 	offset = (y * f->linelen + x * (f->bpp / 8));
 	dst = f->buf + (offset);
-	*(unsigned int *)dst = color;
+	*(unsigned int *)dst = c;
 }
 
 
@@ -50,37 +50,25 @@ int	clean_exit(t_MiniRT *t)
 }
 
 
-// ======================================================
-//						    RENDER
-// ======================================================
-int	color(double r_, double g_, double b_)
-{
-   	int	RGB;
-	int	r,g,b;
 
-	r = 255 * r_, g = 255 * g_, b = 255 * b_;
-	RGB = (b << 16) + (g >> 8) + r;
-	/*printf(
-		"blue: %d red: %d green: %d = %d \n",
-		(RGB & 0xFF0000) >> 16, (RGB & 0xFF), (RGB & 0xFF00) >> 8,
-		RGB
-	);*/
-	return (RGB);
-}
-
+// blendedValue = (1 - a) * startValue + a * endValue
 int	ray_color(t_ray r)
 {
 	t_v3	unit_dir;
 	double	a;
 
 	unit_dir = unit_vector(r.dir);
-	printf("SO %d \n", unit_dir.y);
 	a = 0.5 * (unit_dir.y + 1.0);
-	return (
+	//printf("RAY Y %f (a %f) (color %d) \n", unit_dir.y, a,
+	//	(int)((1.0 - a) * color(1.0, 1.0, 1.0) + a * color(0.5, 0.7, 1.0))
+	//);
+	
+	return ((int) (255 * a));
+	/*return ((int)(
 		(1.0 - a) * color(1.0, 1.0, 1.0) 
 		+
 		a * color(0.5, 0.7, 1.0)
-	);
+	));*/
 }
 
 
@@ -88,14 +76,13 @@ void	render(t_MiniRT *t)
 {
 	t_viewport *vp = t->rt_scene->viewport;
 
-	for(int x = 0; x < 10/*vp->image_w*/; x++)
+	for(int x = 0; x < vp->image_w ; x++)
 	{
-		for(int y = 0; y < 10/*vp->image_h*/; y++)
+		for(int y = 0; y < vp->image_h; y++)
 		{
 			t_v3 pix_center = v3_constructor(vp->upperLeftPixel.x + (x * vp->pixel_delta_u),
 					vp->upperLeftPixel.y + (y * vp->pixel_delta_v), vp->upperLeftPixel.z);
-			printf("%d %d %d \n", pix_center.x, pix_center.y, pix_center.z);
-			// pix_center = pix_center - camera_center
+			
 			t_ray r = ray_constructor(t->rt_scene->camera, pix_center);
 			set_pixel_color(t, x, y, ray_color(r));
 		}
@@ -146,7 +133,7 @@ void	init_scene(t_MiniRT *t)
 			vp_->upperLeft.z);
 
 	printf(
-		"SCENE [IMAGE: %dx%d] [VIEWPORT: %dx%d]  [PIXELDELTA: (U:%f V: %f)] [TOPLEFT-PIXEL : (%d,%d,%d)]\n", 
+		"SCENE [IMAGE: %dx%d] [VIEWPORT: %dx%d]  [PIXELDELTA: (U:%f V: %f)] [TOPLEFT-PIXEL : (%f,%f,%f)]\n", 
 		vp_->image_w, vp_->image_h, vp_->width, vp_->height,
 			vp_->pixel_delta_u, vp_->pixel_delta_v,
 			vp_->upperLeftPixel.x, vp_->upperLeftPixel.y, vp_->upperLeftPixel.z
