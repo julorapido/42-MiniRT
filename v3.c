@@ -6,7 +6,7 @@
 /*   By: jsaintho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 15:10:02 by jsaintho          #+#    #+#             */
-/*   Updated: 2024/08/28 12:17:29 by jsaintho         ###   ########.fr       */
+/*   Updated: 2024/08/28 18:02:46 by jsaintho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,10 @@ t_v3	v3_add(t_v3 a, t_v3 b)
 	));
 }
 
-t_v3	point_at(t_ray *ray, double t)
+t_v3	point_at(t_ray ray, double t)
 {
-	return (v3_add(ray->origin, 
-			v3_constructor(ray->dir.x * t, ray->dir.y * t, ray->dir.z * t)
+	return (v3_add(ray.origin, 
+			v3_constructor(ray.dir.x * t, ray.dir.y * t, ray.dir.z * t)
 		)
 	);
 }
@@ -60,6 +60,11 @@ t_v3	unit_vector(t_v3 v)
 	return(
 		v3_constructor(v.x * (1 / v.len), v.y * (1 / v.len), v.z * (1 / v.len))
 	);
+}
+
+double	v3_dot(t_v3 a, t_v3 b)
+{
+	return ((double)(a.x * b.x + a.y * b.y + a.z * b.z));
 }
 
 t_ray	ray_constructor(t_v3 origin, t_v3 d)

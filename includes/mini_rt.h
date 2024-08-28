@@ -6,7 +6,7 @@
 /*   By: jsaintho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 17:54:56 by jsaintho          #+#    #+#             */
-/*   Updated: 2024/08/28 12:27:46 by jsaintho         ###   ########.fr       */
+/*   Updated: 2024/08/28 18:02:28 by jsaintho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,12 +89,16 @@ int	init_renderer(t_MiniRT *t);
 int	clean_exit(t_MiniRT *t);
 
 //  (VECTORIAL MATH)
-t_v3	point_at(t_ray *ray, double t);
+t_v3	point_at(t_ray ray, double t);
 t_v3	v3_add(t_v3 a, t_v3 b);
 t_v3	v3_cross(t_v3 a, t_v3 b);
 t_v3 	v3_mult(t_v3 a, t_v3 b);
+double	v3_dot(t_v3 a, t_v3 b);
 t_v3	unit_vector(t_v3 v);
 t_v3	v3_constructor(double x, double y, double z);
 t_ray	ray_constructor(t_v3 origin, t_v3 d);
+
+// SP_CY
+double	sphere(t_ray r);
 
 #endif

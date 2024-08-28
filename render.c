@@ -6,7 +6,7 @@
 /*   By: jsaintho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 12:57:51 by jsaintho          #+#    #+#             */
-/*   Updated: 2024/08/28 14:29:18 by jsaintho         ###   ########.fr       */
+/*   Updated: 2024/08/28 18:03:11 by jsaintho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,14 @@ void	set_pixel_color(t_MiniRT *f, long x, long y, int c)
 {
 	char	*dst;
 	long	offset;
-	long	color;
 	
 	if (x < 0 || y < 0 || y > HEIGHT || x > WIDTH)
 		return ;
-	// color = (c >> 24);
+
 	offset = (y * f->linelen + x * (f->bpp / 8));
 	dst = f->buf + (offset);
 	*(unsigned int *)dst = c;
 }
-
 
 // =================================
 //             CLEAN EXIT
@@ -43,14 +41,28 @@ int	clean_exit(t_MiniRT *t)
 	{
 		mlx_loop_end(t->mlx);
 		mlx_destroy_window(t->mlx, t->win);
+		free(t->rt_scene->viewport);
+		free(t->rt_scene);
 		free(t);
 		t = NULL;
 	}
 	exit(0);
 }
 
+int	color(double r_, double g_, double b_)
+{
+	int r = 255 * r_, g = 255 * g_, b = 255 * b_;
+
+	int	c = r;
+	c = (c << 8) | g;
+	c = (c << 8) | b;
+	return (c);
+}
 
 
+// ==============================================
+//					RAY COLOR
+// ==============================================
 // blendedValue = (1 - a) * startValue + a * endValue
 int	ray_color(t_ray r)
 {
@@ -59,10 +71,16 @@ int	ray_color(t_ray r)
 
 	unit_dir = unit_vector(r.dir);
 	a = 0.5 * (unit_dir.y + 1.0);
+
 	//printf("RAY Y %f (a %f) (color %d) \n", unit_dir.y, a,
 	//	(int)((1.0 - a) * color(1.0, 1.0, 1.0) + a * color(0.5, 0.7, 1.0))
 	//);
-	
+	double d = sphere(r);
+	if(d > 0.0)
+	{
+		t_v3 n = unit_vector(point_at(r, d));
+		return (0.5 * (color(n.x + 1, n.y + 1, n.z + 1)));
+	}
 	return ((int) (255 * a));
 	/*return ((int)(
 		(1.0 - a) * color(1.0, 1.0, 1.0) 
@@ -70,7 +88,6 @@ int	ray_color(t_ray r)
 		a * color(0.5, 0.7, 1.0)
 	));*/
 }
-
 
 void	render(t_MiniRT *t)
 {
@@ -86,8 +103,7 @@ void	render(t_MiniRT *t)
 			t_ray r = ray_constructor(t->rt_scene->camera, pix_center);
 			set_pixel_color(t, x, y, ray_color(r));
 		}
-	}
-
+	}	
 	mlx_put_image_to_window(t->mlx, t->win, t->img, 0, 0);
 }
 
@@ -107,7 +123,7 @@ void	init_scene(t_MiniRT *t)
 	vp_->focal_length = 1.0;
 		
 	// Viewport Image
-	double ASPECT_RATIO = 16.0 / 9.0;
+	double ASPECT_RATIO = 2.0 / 1.0;
 	vp_->image_w = WIDTH;
 	vp_->image_h = ((int)(vp_->image_w / ASPECT_RATIO) < 1) 
 			? 1 : ((int)(vp_->image_w / ASPECT_RATIO));
@@ -165,4 +181,4 @@ int	init_renderer(t_MiniRT *t)
 	init_scene(t);
 	render(t);
 	return (1);
-}t_v3	unit_vector(t_v3 v);
+}
