@@ -6,7 +6,7 @@
 /*   By: jsaintho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 15:37:39 by jsaintho          #+#    #+#             */
-/*   Updated: 2024/09/02 15:42:46 by jsaintho         ###   ########.fr       */
+/*   Updated: 2024/09/02 17:48:00 by jsaintho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,29 +37,42 @@ int	color(double r_, double g_, double b_)
 
 
 // ==============================================
-//					RAY COLOR
+//					THROW RAY
 // ==============================================
-// blendedValue = (1 - a) * startValue + a * endValue
-int	ray_color(t_ray r)
+// - Goes through each obj of the scene
+// - Stops at closest ray hit.
+// - => returns a color32
+// PLANE : plane color
+// SPHERE : v3(x * a, y * a, z * a)
+// BACKGROUND : blendedValue = (1 - a) * startValue + a * endValue
+int	throw_ray(t_ray r, t_scene *s)
 {
 	t_v3	unit_dir;
+	int		i;
 	double	a;
-	
-	double t = sphere(v3_constructor(0,0, -1.0), r);
+	double	t; // HIT RES
 
-	if(t > 0.0) // sphere hit
+	i = 0;
+	while (s->objs[i].id != NULL) // each objs of scene
 	{
-		t_v3 n = unit_vector(v3_constructor(point_at(r, t).x, point_at(r, t).y, point_at(r, t).z - - 1.0));
-		return color( (n.x+1.0) * 0.5, (n.y+1.0) * 0.5, (n.z+1.0) * 0.5); 	
+		if(s->objs[i].id == "cy")
+			t = sphere(s->objs[i].pos, r);
+
+		if(t > 0.0) // OBJECT
+		{
+			t_v3 n = unit_vector(v3_constructor(point_at(r, t).x, point_at(r, t).y, point_at(r, t).z - - 1.0));
+			return color( (n.x+1.0) * 0.5, (n.y+1.0) * 0.5, (n.z+1.0) * 0.5); 	
+		}
+		else // SKY
+		{
+			unit_dir = unit_vector(r.dir);
+			a = 0.5 * (unit_dir.y + 1.0);
+			return (
+					color(1.0 * (1.0-a), 1.0 * (1.0-a), 1.0 * (1.0-a)) // WHITE
+					+ color(0.5 * a, 0.7 * a, 1.0 * a) // BLUE
+			);
+		}
+		i++;
 	}
-	else // not sphere hit
-	{
-		unit_dir = unit_vector(r.dir);
-		a = 0.5 * (unit_dir.y + 1.0);
-		return (
-				color(1.0 * (1.0-a), 1.0 * (1.0-a), 1.0 * (1.0-a)) // WHITE
-				+
-				color(0.5 * a, 0.7 * a, 1.0 * a) // BLUE
-		);
-	}
+	return 0;
 }

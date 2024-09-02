@@ -6,7 +6,7 @@
 /*   By: jsaintho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 12:57:51 by jsaintho          #+#    #+#             */
-/*   Updated: 2024/09/02 15:44:25 by jsaintho         ###   ########.fr       */
+/*   Updated: 2024/09/02 17:48:51 by jsaintho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,18 +34,17 @@ void	set_pixel_color(t_MiniRT *f, long x, long y, int c)
 int	clean_exit(t_MiniRT *t)
 {
 	if (t->img)
-	{
 		mlx_destroy_image(t->mlx, t->img);
-	}
 	if (t->mlx && t->win)
 	{
 		mlx_loop_end(t->mlx);
 		mlx_destroy_window(t->mlx, t->win);
-		free(t->rt_scene->viewport);
-		free(t->rt_scene);
-		free(t);
-		t = NULL;
 	}
+	if(t->rt_scene->viewport)
+		free(t->rt_scene->viewport);
+	if(t->rt_scene)
+		free(t->rt_scene);
+	free(t);
 	exit(0);
 }
 
@@ -64,7 +63,7 @@ void	render(t_MiniRT *t)
 			t_v3 pix_center = v3_constructor(vp->upperLeftPixel.x + (x * vp->pixel_delta_u),
 					vp->upperLeftPixel.y + (y * vp->pixel_delta_v), vp->upperLeftPixel.z);
 			t_ray r = ray_constructor(t->rt_scene->camera, pix_center);
-			set_pixel_color(t, x, y, ray_color(r));
+			set_pixel_color(t, x, y, throw_ray(r, t->rt_scene));
 		}	
 	}	
 	mlx_put_image_to_window(t->mlx, t->win, t->img, 0, 0);

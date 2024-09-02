@@ -6,7 +6,7 @@
 /*   By: jsaintho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 17:54:56 by jsaintho          #+#    #+#             */
-/*   Updated: 2024/09/02 15:38:46 by jsaintho         ###   ########.fr       */
+/*   Updated: 2024/09/02 17:48:29 by jsaintho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,13 @@ typedef struct s_ray
 	t_v3	origin;
 	t_v3	dir;
 }				t_ray;
+typedef struct s_obj
+{
+	char	*id;
+	t_v3	pos;
+	int		rgb[3];
+	double	diameter;
+}				t_obj;
 // -------------------------
 
 
@@ -64,6 +71,7 @@ typedef struct s_scene
 {
 	t_v3		camera;
 	t_viewport	*viewport;
+	t_obj		*objs;
 }				t_scene;
 // -------------------------
 
@@ -101,7 +109,7 @@ t_ray	ray_constructor(t_v3 origin, t_v3 d);
 double	sphere(t_v3 v, t_ray r);
 
 // RAY
-int		ray_color(t_ray r);
+int		throw_ray(t_ray r, t_scene *s);
 int		color(double r_, double g_, double b_);
 
 

@@ -6,13 +6,30 @@
 /*   By: jsaintho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 17:37:14 by jsaintho          #+#    #+#             */
-/*   Updated: 2024/08/27 14:34:32 by jsaintho         ###   ########.fr       */
+/*   Updated: 2024/09/02 17:44:19 by jsaintho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_rt.h"
 // https://raytracing.github.io/books/RayTracingInOneWeekend.html
 
+static void	init_scene(t_MiniRT *t)
+{
+	t_obj	*scene_objects;
+
+	if(!t->rt_scene)
+		return ;
+	scene_objects = (t_obj *) malloc(2 * sizeof(t_obj));
+	if(!scene_objects)
+		return ;
+
+	// 1st Sphere
+	scene_objects[0].id = "sy";
+	scene_objects[0].pos =  v3_constructor(0, 0, -1);
+	scene_objects[0].diameter = 0.5;
+
+	scene_objects[1].id = NULL;
+}
 
 int main(int argc, char **argv)
 {
@@ -31,7 +48,7 @@ int main(int argc, char **argv)
 		clean_exit(t);
 		return (0);
 	}
-	//mlx_hook(t->win, 2, 1L << 0, k_hook, t);
+	init_scene(t);
 	mlx_put_image_to_window(t->mlx, t->win, t->img, 0, 0);
 	mlx_loop(t->mlx);
 	return (0);
