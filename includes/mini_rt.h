@@ -6,7 +6,7 @@
 /*   By: jsaintho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 17:54:56 by jsaintho          #+#    #+#             */
-/*   Updated: 2024/08/28 18:02:28 by jsaintho         ###   ########.fr       */
+/*   Updated: 2024/09/02 15:38:46 by jsaintho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 
 # define WIDTH 800
 # define HEIGHT 400
-// # define ASPECT_RATIO 16/9
 
 //# define IMAGE_WIDTH 1080
 //# define IMAGE_height int(image_width / ASPECT_RATIO) < 1 ? 1 : int(image_width / ASPECT_RATIO)
@@ -99,6 +98,11 @@ t_v3	v3_constructor(double x, double y, double z);
 t_ray	ray_constructor(t_v3 origin, t_v3 d);
 
 // SP_CY
-double	sphere(t_ray r);
+double	sphere(t_v3 v, t_ray r);
+
+// RAY
+int		ray_color(t_ray r);
+int		color(double r_, double g_, double b_);
+
 
 #endif

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sp_cy.c                                            :+:      :+:    :+:   */
+/*   sp_cy_pl.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jsaintho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 14:40:23 by jsaintho          #+#    #+#             */
-/*   Updated: 2024/08/28 17:54:19 by jsaintho         ###   ########.fr       */
+/*   Updated: 2024/09/02 15:32:46 by jsaintho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,39 +15,45 @@
 #define CENTER v3_constructor(0, 0, 0)
 //#define RADIUS 0.5
 
-double	sphere(t_ray r)
+
+//	===============================================
+//	||					SPHERE				 	 ||
+//	===============================================
+//	QUADRATIC EQUATION = ax2 + bx + c = 0
+//
+//	QUADRATIC FORMULA =  -b +- sqrt(b2 - 4ac)
+//	QUADRATIC FORMULA = ----------------------
+//	QUADRATIC FORMULA = 		2a
+//
+//	........ SPHERE EQUATION = x2 + y2 + c2 = r2
+//  CENTERED-SPHERE EQUATION = (Cx - x)2 + (Cy - y)2 + (Cz - z)2 = r2
+//
+double	sphere(t_v3 center, t_ray r)
 {
 	t_v3	oc;
 	double	a;
 	double	b;
 	double	c;
-	double	RADIUS = 1.0;
-	int		discriminant;
+	double	RADIUS = 0.50;
+	double	discriminant;
 
-	oc = v3_constructor(0, 0, 2);
-	// Sphere
-	// x2 + y2 + z2 = r2
-
-	// Centered Sphere
-	// (Cx - x)2 + (Cy - y)2 + (Cz - z) = r2
-
-	// Centered Sphere (Produit Scalaire)
-	// P = (x, y, z) 
-	// C = (Cx, Cy, Cz)
-	// (C - P) • (C - P) = r2
-
+	oc = v3_constructor(center.x - r.origin.x, center.y - r.origin.y, center.z - r.origin.z);
 	// a = d • d
 	a = v3_dot(r.dir, r.dir);
-	
 	// b = -2d • (C - Q)
-	b = -2.0 * v3_dot(r.dir, oc);
-
+	b = -2.0 * v3_dot(oc, r.dir);
 	// c = (C - Q) • (C - Q) - r2
 	c = v3_dot(oc, oc) - RADIUS * RADIUS;
 
-	discriminant = b*b - 4*a*c;
+	discriminant = (b*b) - 4.0*a*c;
 	if(discriminant < 0)
 		return -1.0;
 	else
-		return  ((-b - sqrt(discriminant)) / (2.0 * a));
+		return  (-b - sqrt(discriminant)) / (2.0 * a);
 }
+
+
+//	===============================================
+//	||					PLANE				 	 ||
+//	===============================================
+

@@ -6,7 +6,7 @@
 /*   By: jsaintho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 15:10:02 by jsaintho          #+#    #+#             */
-/*   Updated: 2024/08/28 18:02:46 by jsaintho         ###   ########.fr       */
+/*   Updated: 2024/09/02 15:42:58 by jsaintho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_v3	v3_constructor(double x, double y, double z)
 	v.x = x;
 	v.y = y;
 	v.z = z;
-	v.len = sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+	v.len = sqrt((v.x * v.x) + (v.y * v.y) + (v.z * v.z));
 	return (v);
 }
 
@@ -57,21 +57,10 @@ t_v3	point_at(t_ray ray, double t)
 
 t_v3	unit_vector(t_v3 v)
 {
-	return(
-		v3_constructor(v.x * (1 / v.len), v.y * (1 / v.len), v.z * (1 / v.len))
-	);
+	return (v3_constructor(v.x / v.len, v.y / v.len , v.z / v.len));
 }
 
 double	v3_dot(t_v3 a, t_v3 b)
 {
-	return ((double)(a.x * b.x + a.y * b.y + a.z * b.z));
-}
-
-t_ray	ray_constructor(t_v3 origin, t_v3 d)
-{
-	t_ray	r;
-
-	r.origin = origin;
-	r.dir = d;
-	return (r);
+	return ((a.x * b.x) + (a.y * b.y) + (a.z * b.z));
 }

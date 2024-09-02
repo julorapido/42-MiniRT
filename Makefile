@@ -1,5 +1,5 @@
 NAME = MiniRT
-SRCS = mini_rt.c render.c v3.c sp_cy.c
+SRCS = mini_rt.c render.c v3.c sp_cy_pl.c ray.c
 SRCS_OBJ = $(SRCS:.c=.o)
 
 CFLAGS = -Wall -Wextra

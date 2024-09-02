@@ -6,7 +6,7 @@
 /*   By: jsaintho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 12:57:51 by jsaintho          #+#    #+#             */
-/*   Updated: 2024/08/28 18:03:11 by jsaintho         ###   ########.fr       */
+/*   Updated: 2024/09/02 15:44:25 by jsaintho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,60 +49,23 @@ int	clean_exit(t_MiniRT *t)
 	exit(0);
 }
 
-int	color(double r_, double g_, double b_)
-{
-	int r = 255 * r_, g = 255 * g_, b = 255 * b_;
 
-	int	c = r;
-	c = (c << 8) | g;
-	c = (c << 8) | b;
-	return (c);
-}
-
-
-// ==============================================
-//					RAY COLOR
-// ==============================================
-// blendedValue = (1 - a) * startValue + a * endValue
-int	ray_color(t_ray r)
-{
-	t_v3	unit_dir;
-	double	a;
-
-	unit_dir = unit_vector(r.dir);
-	a = 0.5 * (unit_dir.y + 1.0);
-
-	//printf("RAY Y %f (a %f) (color %d) \n", unit_dir.y, a,
-	//	(int)((1.0 - a) * color(1.0, 1.0, 1.0) + a * color(0.5, 0.7, 1.0))
-	//);
-	double d = sphere(r);
-	if(d > 0.0)
-	{
-		t_v3 n = unit_vector(point_at(r, d));
-		return (0.5 * (color(n.x + 1, n.y + 1, n.z + 1)));
-	}
-	return ((int) (255 * a));
-	/*return ((int)(
-		(1.0 - a) * color(1.0, 1.0, 1.0) 
-		+
-		a * color(0.5, 0.7, 1.0)
-	));*/
-}
-
+// ==================================
+//				RENDER
+// ==================================
 void	render(t_MiniRT *t)
 {
 	t_viewport *vp = t->rt_scene->viewport;
 
-	for(int x = 0; x < vp->image_w ; x++)
+	for(int y = 0; y < vp->image_h ; y++)
 	{
-		for(int y = 0; y < vp->image_h; y++)
+		for(int x = 0; x < vp->image_w; x++)
 		{
 			t_v3 pix_center = v3_constructor(vp->upperLeftPixel.x + (x * vp->pixel_delta_u),
 					vp->upperLeftPixel.y + (y * vp->pixel_delta_v), vp->upperLeftPixel.z);
-			
 			t_ray r = ray_constructor(t->rt_scene->camera, pix_center);
 			set_pixel_color(t, x, y, ray_color(r));
-		}
+		}	
 	}	
 	mlx_put_image_to_window(t->mlx, t->win, t->img, 0, 0);
 }
@@ -129,7 +92,7 @@ void	init_scene(t_MiniRT *t)
 			? 1 : ((int)(vp_->image_w / ASPECT_RATIO));
 
 	// Viewport Width && Height
-	vp_->height = 5.0;
+	vp_->height = 3.0;
 	vp_->width = vp_->height * ((double)(vp_->image_w)/vp_->image_h);
 
 	// Vector across horizontal(U) && vertical(V) viewport edges
@@ -149,7 +112,7 @@ void	init_scene(t_MiniRT *t)
 			vp_->upperLeft.z);
 
 	printf(
-		"SCENE [IMAGE: %dx%d] [VIEWPORT: %dx%d]  [PIXELDELTA: (U:%f V: %f)] [TOPLEFT-PIXEL : (%f,%f,%f)]\n", 
+		"SCENE : [IMAGE: %dx%d] [VIEWPORT: %dx%d]\nTOP-LEFT : [PIXELDELTA:(U:%f V: %f)] [TOPLEFT-PIXEL : (%f,%f,%f)]\n", 
 		vp_->image_w, vp_->image_h, vp_->width, vp_->height,
 			vp_->pixel_delta_u, vp_->pixel_delta_v,
 			vp_->upperLeftPixel.x, vp_->upperLeftPixel.y, vp_->upperLeftPixel.z
