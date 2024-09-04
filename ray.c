@@ -6,13 +6,13 @@
 /*   By: jsaintho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 15:37:39 by jsaintho          #+#    #+#             */
-/*   Updated: 2024/09/02 17:48:00 by jsaintho         ###   ########.fr       */
+/*   Updated: 2024/09/04 14:45:10 by jsaintho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_rt.h"
 
-t_ray	ray_constructor(t_v3 origin, t_v3 d)
+t_ray	ray_new(t_v3 origin, t_v3 d)
 {
 	t_ray	r;
 
@@ -23,7 +23,6 @@ t_ray	ray_constructor(t_v3 origin, t_v3 d)
 
 int	color(double r_, double g_, double b_)
 {
-	//int r = 255 * r_, g = 255 * g_, b = 255 * b_;
 	int	r = (int)(255.999 * r_);
 	int g = (int)(255.999 * g_);
 	int b = (int)(255.999 * b_);
@@ -48,19 +47,26 @@ int	color(double r_, double g_, double b_)
 int	throw_ray(t_ray r, t_scene *s)
 {
 	t_v3	unit_dir;
+	t_hit	*hit;
 	int		i;
 	double	a;
-	double	t; // HIT RES
+	bool	t; // HIT RES
 
 	i = 0;
-	while (s->objs[i].id != NULL) // each objs of scene
+	t = false;
+	hit = (t_hit *) malloc(1 * sizeof(t_hit));
+	while (s->objs[i]) // each objs of scene
 	{
-		if(s->objs[i].id == "cy")
-			t = sphere(s->objs[i].pos, r);
+		if(strcmp(s->objs[i]->id, ".") == 0) break ;
+		
+		if(strcmp(s->objs[i]->id, "sph") == 0)
+			t = sphere(s->objs[i]->pos, r, hit);
 
-		if(t > 0.0) // OBJECT
+		if(t) // OBJECT
 		{
-			t_v3 n = unit_vector(v3_constructor(point_at(r, t).x, point_at(r, t).y, point_at(r, t).z - - 1.0));
+			t_v3 n = unit_vector(
+				v3_new(point_at(r, hit->t).x, point_at(r, hit->t).y, point_at(r, hit->t).z - - 1.0)
+			);
 			return color( (n.x+1.0) * 0.5, (n.y+1.0) * 0.5, (n.z+1.0) * 0.5); 	
 		}
 		else // SKY

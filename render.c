@@ -6,7 +6,7 @@
 /*   By: jsaintho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 12:57:51 by jsaintho          #+#    #+#             */
-/*   Updated: 2024/09/02 17:48:51 by jsaintho         ###   ########.fr       */
+/*   Updated: 2024/09/04 14:53:26 by jsaintho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,9 @@ void	render(t_MiniRT *t)
 	{
 		for(int x = 0; x < vp->image_w; x++)
 		{
-			t_v3 pix_center = v3_constructor(vp->upperLeftPixel.x + (x * vp->pixel_delta_u),
+			t_v3 pix_center = v3_new(vp->upperLeftPixel.x + (x * vp->pixel_delta_u),
 					vp->upperLeftPixel.y + (y * vp->pixel_delta_v), vp->upperLeftPixel.z);
-			t_ray r = ray_constructor(t->rt_scene->camera, pix_center);
+			t_ray r = ray_new(t->rt_scene->camera, pix_center);
 			set_pixel_color(t, x, y, throw_ray(r, t->rt_scene));
 		}	
 	}	
@@ -72,14 +72,14 @@ void	render(t_MiniRT *t)
 
 
 // =======================================================
-//					INIT SCENE
+//					INIT VIEWPORT
 // =======================================================
-void	init_scene(t_MiniRT *t)
+void	init_viewport(t_MiniRT *t)
 {
 	t_viewport	*vp_;
 
 	vp_ = (t_viewport *) malloc(sizeof(t_viewport));
-	t->rt_scene->camera = v3_constructor(0, 0, 0);
+	t->rt_scene->camera = v3_new(0, 0, 0);
 	if (!vp_)
 		return ;
 	vp_->focal_length = 1.0;
@@ -95,26 +95,25 @@ void	init_scene(t_MiniRT *t)
 	vp_->width = vp_->height * ((double)(vp_->image_w)/vp_->image_h);
 
 	// Vector across horizontal(U) && vertical(V) viewport edges
-	vp_->vector_u = v3_constructor(vp_->width, 0, 0);
-	vp_->vector_v = v3_constructor(0, vp_->height, 0);
+	vp_->vector_u = v3_new(vp_->width, 0, 0);
+	vp_->vector_v = v3_new(0, vp_->height, 0);
 
 	// Detla Vectors (U-V) from pixel to pixel
 	vp_->pixel_delta_u = (double)(vp_->width) / (double)(vp_->image_w);
 	vp_->pixel_delta_v = (double)(vp_->height) / (double)(vp_->image_h);
 
 	// TopLeft point v3(0, 0, 0)
-	vp_->upperLeft = v3_constructor(
+	vp_->upperLeft = v3_new(
 			-(vp_->vector_u.x / 2), -(vp_->vector_v.y / 2), -(vp_->focal_length));
 	// TopLeft Pixel0,0
-	vp_->upperLeftPixel =  v3_constructor(
+	vp_->upperLeftPixel =  v3_new(
 			vp_->upperLeft.x + vp_->pixel_delta_u, vp_->upperLeft.y + vp_->pixel_delta_v, 
 			vp_->upperLeft.z);
 
 	printf(
-		"SCENE : [IMAGE: %dx%d] [VIEWPORT: %dx%d]\nTOP-LEFT : [PIXELDELTA:(U:%f V: %f)] [TOPLEFT-PIXEL : (%f,%f,%f)]\n", 
-		vp_->image_w, vp_->image_h, vp_->width, vp_->height,
-			vp_->pixel_delta_u, vp_->pixel_delta_v,
-			vp_->upperLeftPixel.x, vp_->upperLeftPixel.y, vp_->upperLeftPixel.z
+		"SCENE : [IMAGE: %dx%d] [VIEWPORT: %dx%d]\nTOP-LEFT : [PIXELDELTA:(U:%f V: %f)] \nTOPLEFT-PIXEL : (%f,%f,%f)\n", 
+		vp_->image_w, vp_->image_h, vp_->width, vp_->height, vp_->pixel_delta_u, vp_->pixel_delta_v,
+		vp_->upperLeftPixel.x, vp_->upperLeftPixel.y, vp_->upperLeftPixel.z
 	);
 	t->rt_scene->viewport = vp_;
 }
@@ -139,8 +138,6 @@ int	init_renderer(t_MiniRT *t)
 		clean_exit(t);
 		return (-1);
 	}
-	printf("WINDOW [%dx%d] \n", WIDTH, HEIGHT);
-	init_scene(t);
-	render(t);
+	printf("WINDOW [%dx%d] \n", WIDTH, HEIGHT);	
 	return (1);
 }

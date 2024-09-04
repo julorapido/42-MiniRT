@@ -6,29 +6,44 @@
 /*   By: jsaintho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 17:37:14 by jsaintho          #+#    #+#             */
-/*   Updated: 2024/09/02 17:44:19 by jsaintho         ###   ########.fr       */
+/*   Updated: 2024/09/04 14:57:36 by jsaintho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_rt.h"
 // https://raytracing.github.io/books/RayTracingInOneWeekend.html
 
+//  ========= SCENE ==========
+// {SPHERE, PLANE}
+//
 static void	init_scene(t_MiniRT *t)
 {
-	t_obj	*scene_objects;
+	t_obj	**scene_objects;
 
 	if(!t->rt_scene)
 		return ;
-	scene_objects = (t_obj *) malloc(2 * sizeof(t_obj));
+	scene_objects = (t_obj **) malloc(sizeof(t_obj *));
 	if(!scene_objects)
 		return ;
 
 	// 1st Sphere
-	scene_objects[0].id = "sy";
-	scene_objects[0].pos =  v3_constructor(0, 0, -1);
-	scene_objects[0].diameter = 0.5;
+	*scene_objects = (t_obj *) malloc(sizeof(t_obj ));
+	(*scene_objects)->id = "sph";
+	(*scene_objects)->pos =  v3_new(0, 0, -1);
+	(*scene_objects)->diameter = 0.5;
 
-	scene_objects[1].id = NULL;
+	scene_objects[1] = (t_obj *) malloc(sizeof(t_obj ));
+	scene_objects[1]->id = ".";
+	t->rt_scene->objs = scene_objects;
+
+	printf("======= SCENE =======\n");
+	int i = 0;
+	while(t->rt_scene->objs[i]->id[0] != '.')
+	{
+		t_obj	*o = t->rt_scene->objs[i];
+		printf("->%s: v3(%.2f, %.2f, %.2f)\n", o->id, o->pos.x, o->pos.y, o->pos.z);
+		i++;
+	}
 }
 
 int main(int argc, char **argv)
@@ -48,7 +63,9 @@ int main(int argc, char **argv)
 		clean_exit(t);
 		return (0);
 	}
+	init_viewport(t);
 	init_scene(t);
+	render(t);
 	mlx_put_image_to_window(t->mlx, t->win, t->img, 0, 0);
 	mlx_loop(t->mlx);
 	return (0);

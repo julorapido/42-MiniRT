@@ -6,7 +6,7 @@
 /*   By: jsaintho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 17:54:56 by jsaintho          #+#    #+#             */
-/*   Updated: 2024/09/02 17:48:29 by jsaintho         ###   ########.fr       */
+/*   Updated: 2024/09/04 14:44:22 by jsaintho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 #include "mlx.h"
 
 #include <stdio.h>
+#include <string.h>
+#include <stdbool.h>
 #include <stdlib.h>
 #include <math.h> 
 
@@ -40,6 +42,13 @@ typedef struct s_ray
 	t_v3	origin;
 	t_v3	dir;
 }				t_ray;
+typedef struct s_hit
+{
+	t_v3	p;
+	t_v3	normal;
+	double	t;
+	bool	front_face;
+}				t_hit;
 typedef struct s_obj
 {
 	char	*id;
@@ -71,7 +80,7 @@ typedef struct s_scene
 {
 	t_v3		camera;
 	t_viewport	*viewport;
-	t_obj		*objs;
+	t_obj		**objs;
 }				t_scene;
 // -------------------------
 
@@ -92,23 +101,31 @@ typedef struct s_MiniRT
 
 
 // RENDERER
-int	init_renderer(t_MiniRT *t);
-int	clean_exit(t_MiniRT *t);
+int		init_renderer(t_MiniRT *t);
+int		clean_exit(t_MiniRT *t);
+void	render(t_MiniRT *t);
+void	init_viewport(t_MiniRT *t);
 
-//  (VECTORIAL MATH)
-t_v3	point_at(t_ray ray, double t);
+
+
+//  v3 (VECTORIAL MATH)
 t_v3	v3_add(t_v3 a, t_v3 b);
 t_v3	v3_cross(t_v3 a, t_v3 b);
 t_v3 	v3_mult(t_v3 a, t_v3 b);
 double	v3_dot(t_v3 a, t_v3 b);
 t_v3	unit_vector(t_v3 v);
-t_v3	v3_constructor(double x, double y, double z);
+t_v3	v3_new(double x, double y, double z);
+
+// ray 
+t_v3	point_at(t_ray ray, double t);
 t_ray	ray_constructor(t_v3 origin, t_v3 d);
 
-// SP_CY
-double	sphere(t_v3 v, t_ray r);
+// SP_CY_PL
+bool	sphere(t_v3 v, t_ray r, t_hit *h);
 
 // RAY
+t_v3	point_at(t_ray ray, double t);
+t_ray	ray_new(t_v3 origin, t_v3 d);
 int		throw_ray(t_ray r, t_scene *s);
 int		color(double r_, double g_, double b_);
 
