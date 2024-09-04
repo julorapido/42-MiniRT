@@ -6,7 +6,7 @@
 /*   By: jsaintho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 17:54:56 by jsaintho          #+#    #+#             */
-/*   Updated: 2024/09/04 14:44:22 by jsaintho         ###   ########.fr       */
+/*   Updated: 2024/09/04 15:58:48 by jsaintho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ typedef struct s_obj
 	char	*id;
 	t_v3	pos;
 	int		rgb[3];
-	double	diameter;
+	double	radius;
 }				t_obj;
 // -------------------------
 
@@ -121,7 +121,7 @@ t_v3	point_at(t_ray ray, double t);
 t_ray	ray_constructor(t_v3 origin, t_v3 d);
 
 // SP_CY_PL
-bool	sphere(t_v3 v, t_ray r, t_hit *h);
+bool	sphere(t_v3 v, t_ray r, t_hit *h, t_obj	*b);
 
 // RAY
 t_v3	point_at(t_ray ray, double t);

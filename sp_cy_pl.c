@@ -6,7 +6,7 @@
 /*   By: jsaintho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 14:40:23 by jsaintho          #+#    #+#             */
-/*   Updated: 2024/09/04 14:43:57 by jsaintho         ###   ########.fr       */
+/*   Updated: 2024/09/04 17:17:03 by jsaintho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,13 @@
 //	........ SPHERE EQUATION = x2 + y2 + c2 = r2
 //  CENTERED-SPHERE EQUATION = (Cx - x)2 + (Cy - y)2 + (Cz - z)2 = r2
 //
-bool	sphere(t_v3 center, t_ray r, t_hit *hit)
+bool	sphere(t_v3 center, t_ray r, t_hit *hit, t_obj *o)
 {
 	t_v3	oc;
 	double	a;
 	double	b;
 	double	c;
-	double	RADIUS = 0.50;
+	double	RADIUS = o->radius;
 	double	discriminant;
 	double	root;
 
@@ -66,11 +66,10 @@ bool	sphere(t_v3 center, t_ray r, t_hit *hit)
 			(hit->p.y - center.y) / RADIUS,
 			(hit->p.z - center.z) / RADIUS
 		);
-		//t_v3 outward_normal = v3_new((hit.p.x - center.x) / RADIUS, (hit.p.y - center.y) / RADIUS, (hit.p.x - center.x) / RADIUS);
 		hit->front_face = v3_dot(r.dir, outward_normal) < 0 ? true : false;
 		hit->normal = (hit->front_face) ? 
 			(outward_normal) : (v3_new(-outward_normal.x, -outward_normal.y, -outward_normal.z));
-		return true;	
+		return true;
 	}
 }
 

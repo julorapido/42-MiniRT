@@ -6,7 +6,7 @@
 /*   By: jsaintho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 17:37:14 by jsaintho          #+#    #+#             */
-/*   Updated: 2024/09/04 14:57:36 by jsaintho         ###   ########.fr       */
+/*   Updated: 2024/09/04 15:50:34 by jsaintho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,18 +30,23 @@ static void	init_scene(t_MiniRT *t)
 	*scene_objects = (t_obj *) malloc(sizeof(t_obj ));
 	(*scene_objects)->id = "sph";
 	(*scene_objects)->pos =  v3_new(0, 0, -1);
-	(*scene_objects)->diameter = 0.5;
+	(*scene_objects)->radius = 0.5;
 
 	scene_objects[1] = (t_obj *) malloc(sizeof(t_obj ));
-	scene_objects[1]->id = ".";
+	scene_objects[1]->id = "sph";
+	scene_objects[1]->pos =  v3_new(0, -100.5, -1);
+	scene_objects[1]->radius = 100.0;
+
+	scene_objects[2] = (t_obj *) malloc(sizeof(t_obj ));
+	scene_objects[2]->id = ".";
 	t->rt_scene->objs = scene_objects;
 
-	printf("======= SCENE =======\n");
+	printf("============== SCENE ==============\n");
 	int i = 0;
 	while(t->rt_scene->objs[i]->id[0] != '.')
 	{
 		t_obj	*o = t->rt_scene->objs[i];
-		printf("->%s: v3(%.2f, %.2f, %.2f)\n", o->id, o->pos.x, o->pos.y, o->pos.z);
+		printf("%s: POS[%.2f, %.2f, %.2f] RADIUS[%.2f]\n", o->id, o->pos.x, o->pos.y, o->pos.z, o->radius);
 		i++;
 	}
 }
