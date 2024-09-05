@@ -6,7 +6,7 @@
 /*   By: jsaintho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 17:54:56 by jsaintho          #+#    #+#             */
-/*   Updated: 2024/09/05 12:38:48 by jsaintho         ###   ########.fr       */
+/*   Updated: 2024/09/05 17:41:51 by jsaintho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # define WIDTH 800
 # define HEIGHT 400
 # define MAXFLOAT 18446744073709551615
+# define RANDOM_FLOAT(min, max) ((max - min) * ((float)rand() / RAND_MAX)) + min 
 
 //# define IMAGE_WIDTH 1080
 //# define IMAGE_height int(image_width / ASPECT_RATIO) < 1 ? 1 : int(image_width / ASPECT_RATIO)
@@ -118,6 +119,11 @@ t_v3 	v3_mult(t_v3 a, t_v3 b);
 double	v3_dot(t_v3 a, t_v3 b);
 t_v3	unit_vector(t_v3 v);
 t_v3	v3_new(double x, double y, double z);
+t_v3	v3_random(double min, double max);
+float	rand_float(float min, float max);
+t_v3	rand_unit_vector(void);
+
+
 
 // ray 
 t_v3	point_at(t_ray ray, double t);

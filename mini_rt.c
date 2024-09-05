@@ -6,16 +6,30 @@
 /*   By: jsaintho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 17:37:14 by jsaintho          #+#    #+#             */
-/*   Updated: 2024/09/04 17:49:36 by jsaintho         ###   ########.fr       */
+/*   Updated: 2024/09/05 17:00:05 by jsaintho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_rt.h"
+#include "keys.h"
 // https://raytracing.github.io/books/RayTracingInOneWeekend.html
 
-//  ========= SCENE ==========
+//	============ KEYBOARD ===============
+int	k_hook(int k_code, t_MiniRT *t)
+{
+	if (k_code == K_ESC)
+		clean_exit(t);
+	else
+	{
+		/*if (k_code == K_UP)
+			re_render(f);*/
+	}
+	return (0);
+}
+
+
+//  ============ SCENE =============
 // {SPHERE, PLANE}
-//
 static void	init_scene(t_MiniRT *t)
 {
 	t_obj	**scene_objects;
@@ -49,6 +63,7 @@ static void	init_scene(t_MiniRT *t)
 		printf("%s: POS[%.2f, %.2f, %.2f] RADIUS[%.2f]\n", o->id, o->pos.x, o->pos.y, o->pos.z, o->radius);
 		i++;
 	}
+	printf("RANDOM FLOAT %f \n", rand_float(0.0, 100.0));
 }
 
 int main(int argc, char **argv)
@@ -71,6 +86,7 @@ int main(int argc, char **argv)
 	init_viewport(t);
 	init_scene(t);
 	render(t);
+	mlx_hook(t->win, 2, 1L << 0, k_hook, t);
 	mlx_put_image_to_window(t->mlx, t->win, t->img, 0, 0);
 	mlx_loop(t->mlx);
 	return (0);

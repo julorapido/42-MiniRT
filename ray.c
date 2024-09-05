@@ -6,7 +6,7 @@
 /*   By: jsaintho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 15:37:39 by jsaintho          #+#    #+#             */
-/*   Updated: 2024/09/05 14:10:34 by jsaintho         ###   ########.fr       */
+/*   Updated: 2024/09/05 14:48:31 by jsaintho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,12 @@ int	ray_color(t_ray r, t_hit *hit, bool t)
 	{
 		//n = unit_vector(v3_new(point_at(r, hit->t).x, point_at(r, hit->t).y, point_at(r, hit->t).z - - 1.0));
 		n = hit->normal;
+		free(hit);
 		return color( (n.x+1.0) * 0.5, (n.y+1.0) * 0.5, (n.z+1.0) * 0.5); 
 	}
 	else // SKY
 	{
+		free(hit);
 		unit_dir = unit_vector(r.dir);
 		a = 0.5 * (unit_dir.y + 1.0);
 		return (

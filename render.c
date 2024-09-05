@@ -6,7 +6,7 @@
 /*   By: jsaintho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 12:57:51 by jsaintho          #+#    #+#             */
-/*   Updated: 2024/09/04 17:01:59 by jsaintho         ###   ########.fr       */
+/*   Updated: 2024/09/05 14:47:25 by jsaintho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,10 @@ int	clean_exit(t_MiniRT *t)
 	if(t->rt_scene->viewport)
 		free(t->rt_scene->viewport);
 	if(t->rt_scene)
+	{
+
 		free(t->rt_scene);
+	}
 	free(t);
 	exit(0);
 }
