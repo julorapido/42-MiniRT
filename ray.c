@@ -6,7 +6,7 @@
 /*   By: jsaintho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 15:37:39 by jsaintho          #+#    #+#             */
-/*   Updated: 2024/09/04 17:31:56 by jsaintho         ###   ########.fr       */
+/*   Updated: 2024/09/05 14:10:34 by jsaintho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,26 +76,33 @@ int	throw_ray(t_ray r, t_scene *s)
 	t_hit	*hit;
 	int		i;
 	bool	t; // HIT RES
+	bool	b = false;
+	double	*ray_tmin = (double *) malloc(1 * sizeof(double));
+	double	*ray_tmax = (double *) malloc(1 * sizeof(double));
 
+	*ray_tmin = 0.0;
+	*ray_tmax = FLT_MAX;
 	i = 0;
 	t = false;
 	hit = (t_hit *) malloc(1 * sizeof(t_hit));
-	hit->t = -1000000.0;
 	while (s->objs[i]) // each objs of scene
 	{
 		if(strcmp(s->objs[i]->id, ".") == 0) break ;
 		
 		// SPHERE
 		if(strcmp(s->objs[i]->id, "sph") == 0)
-		{
-			t = sphere(s->objs[i]->pos, r, hit, s->objs[i]);
-			break ;
+		{	
+			t = sphere(s->objs[i]->pos, r, hit, s->objs[i],
+					ray_tmin, ray_tmax);
+			//break ;
 		} 
 	
 		// PLANE
 		// CYLINDER
 		// CUBE
+		if(t) b = true;
 		i++;
 	}
-	return (ray_color(r, hit, t));
+	free(ray_tmin); free(ray_tmax);	
+	return (ray_color(r, hit, b));
 }

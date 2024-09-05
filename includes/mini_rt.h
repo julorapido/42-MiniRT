@@ -6,7 +6,7 @@
 /*   By: jsaintho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 17:54:56 by jsaintho          #+#    #+#             */
-/*   Updated: 2024/09/04 15:58:48 by jsaintho         ###   ########.fr       */
+/*   Updated: 2024/09/05 12:38:48 by jsaintho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,12 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <math.h> 
+#include <float.h>
+
 
 # define WIDTH 800
 # define HEIGHT 400
+# define MAXFLOAT 18446744073709551615
 
 //# define IMAGE_WIDTH 1080
 //# define IMAGE_height int(image_width / ASPECT_RATIO) < 1 ? 1 : int(image_width / ASPECT_RATIO)
@@ -121,7 +124,8 @@ t_v3	point_at(t_ray ray, double t);
 t_ray	ray_constructor(t_v3 origin, t_v3 d);
 
 // SP_CY_PL
-bool	sphere(t_v3 v, t_ray r, t_hit *h, t_obj	*b);
+bool	sphere(t_v3 v, t_ray r, t_hit *h, t_obj	*b,
+		double *tmin, double *tmax);
 
 // RAY
 t_v3	point_at(t_ray ray, double t);
