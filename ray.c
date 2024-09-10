@@ -6,7 +6,7 @@
 /*   By: jsaintho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 15:37:39 by jsaintho          #+#    #+#             */
-/*   Updated: 2024/09/05 14:48:31 by jsaintho         ###   ########.fr       */
+/*   Updated: 2024/09/10 14:32:06 by jsaintho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ int	color(double r_, double g_, double b_)
 	// return (c);
 	return (r* 256*256) + (g * 256) + b;
 }
-
 
 // =============================
 //			RAY_COLOR
@@ -94,9 +93,7 @@ int	throw_ray(t_ray r, t_scene *s)
 		// SPHERE
 		if(strcmp(s->objs[i]->id, "sph") == 0)
 		{	
-			t = sphere(s->objs[i]->pos, r, hit, s->objs[i],
-					ray_tmin, ray_tmax);
-			//break ;
+			t = sphere(r, hit, s->objs[i], ray_tmin, ray_tmax);
 		} 
 	
 		// PLANE

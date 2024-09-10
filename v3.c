@@ -6,7 +6,7 @@
 /*   By: jsaintho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 15:10:02 by jsaintho          #+#    #+#             */
-/*   Updated: 2024/09/05 17:46:47 by jsaintho         ###   ########.fr       */
+/*   Updated: 2024/09/10 12:49:24 by jsaintho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,21 +76,23 @@ t_v3	rand_unit_vector(void)
 	
 	while(true)
 	{
-		p = v3_random(-1.0, 1.0);
+		p = v3_random(-1, 1);
 		len_sq = p.len * p.len;
-		if (1e-160 < len_sq && len_sq <= 1)
-			return v3_new(p.x / sqrt(len_sq), p.y / sqrt(len_sq), p.z / sqrt(len_sq));
+		if (len_sq <= 1 && 1e-160 < len_sq)
+			return v3_new(
+				p.x / sqrt(len_sq), p.y / sqrt(len_sq), p.z / sqrt(len_sq)
+			);
 	}
 }
 
 t_v3	rand_on_hemisphere(t_v3 normal)
 {
-	t_v3	on_unit_sphere = rand_unit_vector();
+	t_v3	on_unit_sphere = unit_vector(rand_unit_vector());
 
 	if(v3_dot(on_unit_sphere, normal) > 0.0)
 		return (on_unit_sphere);
 	else
-		return (v3_new(-on_unit_sphere.x, -on_unit_sphere.y, -on_unit_sphere.z));
+		return (v3_new(-1 * on_unit_sphere.x, -1 * on_unit_sphere.y, -1 * on_unit_sphere.z));
 }
 
 double	v3_dot(t_v3 a, t_v3 b)

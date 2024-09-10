@@ -6,7 +6,7 @@
 /*   By: jsaintho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 12:57:51 by jsaintho          #+#    #+#             */
-/*   Updated: 2024/09/05 14:47:25 by jsaintho         ###   ########.fr       */
+/*   Updated: 2024/09/09 12:24:06 by jsaintho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ void	init_viewport(t_MiniRT *t)
 			vp_->upperLeft.z);
 
 	printf(
-		"SCENE : [IMAGE: %dx%d] [VIEWPORT: %dx%d]\nTOP-LEFT : [PIXELDELTA:(U:%f V: %f)] \nTOPLEFT-PIXEL : (%f,%f,%f)\n", 
+		"SCENE : [IMAGE: %dx%d] [VIEWPORT: %dx%d]\nTOP-LEFT : [PIXELDELTA U: %f V: %f] \nTOPLEFT-PIXEL : [%f,%f,%f]\n", 
 		vp_->image_w, vp_->image_h, vp_->width, vp_->height, vp_->pixel_delta_u, vp_->pixel_delta_v,
 		vp_->upperLeftPixel.x, vp_->upperLeftPixel.y, vp_->upperLeftPixel.z
 	);

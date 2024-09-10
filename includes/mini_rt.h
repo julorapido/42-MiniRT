@@ -6,7 +6,7 @@
 /*   By: jsaintho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 17:54:56 by jsaintho          #+#    #+#             */
-/*   Updated: 2024/09/05 17:41:51 by jsaintho         ###   ########.fr       */
+/*   Updated: 2024/09/09 13:08:15 by jsaintho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,7 @@ t_v3	v3_new(double x, double y, double z);
 t_v3	v3_random(double min, double max);
 float	rand_float(float min, float max);
 t_v3	rand_unit_vector(void);
+t_v3	rand_on_hemisphere(t_v3 normal);
 
 
 
@@ -130,14 +131,13 @@ t_v3	point_at(t_ray ray, double t);
 t_ray	ray_constructor(t_v3 origin, t_v3 d);
 
 // SP_CY_PL
-bool	sphere(t_v3 v, t_ray r, t_hit *h, t_obj	*b,
-		double *tmin, double *tmax);
+bool	sphere(t_ray r, t_hit *h, t_obj	*b, double *tmin, double *tmax);
 
 // RAY
 t_v3	point_at(t_ray ray, double t);
 t_ray	ray_new(t_v3 origin, t_v3 d);
 int		throw_ray(t_ray r, t_scene *s);
-int		color(double r_, double g_, double b_);
+// int		color(double r_, double g_, double b_);
 
 
 #endif

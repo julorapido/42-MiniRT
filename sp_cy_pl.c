@@ -6,7 +6,7 @@
 /*   By: jsaintho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 14:40:23 by jsaintho          #+#    #+#             */
-/*   Updated: 2024/09/05 13:06:23 by jsaintho         ###   ########.fr       */
+/*   Updated: 2024/09/09 13:02:06 by jsaintho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,18 @@
 //	........ SPHERE EQUATION = x2 + y2 + c2 = r2
 //  CENTERED-SPHERE EQUATION = (Cx - x)2 + (Cy - y)2 + (Cz - z)2 = r2
 //
-bool	sphere(t_v3 center, t_ray r, t_hit *hit, t_obj *o, double *ray_tmin, double *ray_tmax)
+bool	sphere(t_ray r, t_hit *hit, t_obj *o, double *ray_tmin, double *ray_tmax)
 {
 	t_v3	oc;
+	t_v3	center;
 	double	a;
 	double	b;
 	double	c;
 	double	RADIUS = o->radius;
 	double	discriminant;
 	double	root;	
+
+	center = o->pos;
 
 	oc = v3_new(center.x - r.origin.x, center.y - r.origin.y, center.z - r.origin.z);
 	// a = d • d
